@@ -17,8 +17,22 @@ PKG_SOURCE_URL:=git@git.muabaobao.com:depot/package/mraa.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=70600dece4138b0c0dbaff42f57828f1559cd840
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
-PKG_BUILD_DEPENDS:=node python/host swig/host node/host
+PKG_BUILD_DEPENDS:=
 CMAKE_INSTALL:=1
+
+ENABlE_PYTHON:=1
+ENABlE_NODE:=1
+ENABlE_SWIG:=1
+
+ifeq ($(ENABLE_PYTHON),1)
+PKG_BUILD_DEPENDS+=python/host
+endif
+ifeq ($(ENABLE_NODE),1)
+PKG_BUILD_DEPENDS+=node node/host
+endif
+ifeq ($(ENABLE_SWIG),1)
+PKG_BUILD_DEPENDS+=swig/host
+endif
 
 PKG_MAINTAINER:=John Crispin <blogic@openwrt.org>
 PKG_LICENSE:=LGPL-2.1
@@ -43,9 +57,13 @@ endef
 define Package/libmraa/install
 	$(INSTALL_DIR) $(1)/usr/lib/{node/mraa,python2.7/site-packages} $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/libmraa.so* $(1)/usr/lib/
+	ifeq ($(ENABLE_NODE),1)
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/node_modules/mraa/* $(1)/usr/lib/node/mraa/
+	endif
+	ifeq ($(ENABLE_PYTHON),1)
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/python2.7/site-packages/* $(1)/usr/lib/python2.7/site-packages/
-#	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/mraa/examples/python/blink-io8.py $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/share/mraa/examples/python/blink-io8.py $(1)/usr/bin/
+	endif
 endef
 
 $(eval $(call BuildPackage,libmraa))
