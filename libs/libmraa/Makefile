@@ -50,7 +50,10 @@ TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/include/node
 define Package/libmraa
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+python +libstdcpp
+  DEPENDS:=+libstdcpp
+ifeq ($(ENABLE_PYTHON),1)
+  DEPENDS:=+python
+endif
   TITLE:=Intel IoT lowlevel IO library
 endef
 
