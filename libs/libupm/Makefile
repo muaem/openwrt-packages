@@ -13,7 +13,7 @@ PKG_VERSION:=0.4.0
 PKG_RELEASE=$(PKG_SOURCE_VERSION)
 
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_URL:=https://github.com/intel-iot-devkit/upm.git
+PKG_SOURCE_URL:=git@git.muabaobao.com:depot/package/upm.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=04dc6df4297a7766d6f1a8fef9699d586e7e0d92
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
