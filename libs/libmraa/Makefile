@@ -54,6 +54,10 @@ define Package/libmraa
 ifeq ($(ENABLE_PYTHON),1)
   DEPENDS:=+python
 endif
+# Workaround for "missing libpthread.so"
+ifneq ($(ENABLE_PYTHON),1)
+	DEPENDS:=+librt
+endif
   TITLE:=Intel IoT lowlevel IO library
 endef
 
