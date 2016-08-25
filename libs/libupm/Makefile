@@ -23,17 +23,6 @@ ENABLE_PYTHON:=0
 ENABLE_NODE:=0
 ENABLE_SWIG:=0
 
-PKG_BUILD_DEPENDS:=
-ifeq ($(ENABLE_PYTHON),1)
-	PKG_BUILD_DEPENDS+=python/host
-endif
-ifeq ($(ENABLE_NODE),1)
-	PKG_BUILD_DEPENDS+=node node/host
-endif
-ifeq ($(ENABLE_SWIG),1)
-	PKG_BUILD_DEPENDS+=swig/host
-endif
-
 PKG_MAINTAINER:=John Crispin <blogic@openwrt.org>
 PKG_LICENSE:=LGPL-2.1
 
@@ -67,16 +56,17 @@ define Package/libupm
 endef
 
 define Package/libupm/install/Default
+	$(INSTALL_DIR) $(1)/usr/lib/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libupm-$(2).so* $(1)/usr/lib/
 ifeq ($(ENABLE_PYTHON),1)
-	$(INSTALL_DIR) $(1)/usr/lib/{node/,python2.7/site-packages}; \
-endif
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libupm-$(2).so* $(1)/usr/lib/; \
-ifeq ($(ENABLE_NODE),1)
-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/jsupm_$(2) $(1)/usr/lib/node/; \
+	$(INSTALL_DIR) $(1)/usr/lib/python2.7/site-packages
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/lib/python2.7/site-packages/{pyupm_$(2).py,_pyupm_$(2).so} \
-		$(1)/usr/lib/python2.7/site-packages/ ; \
+		$(1)/usr/lib/python2.7/site-packages/
 endif
-	;
+ifeq ($(ENABLE_NODE),1)
+	$(INSTALL_DIR) $(1)/usr/lib/node/
+	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules/jsupm_$(2) $(1)/usr/lib/node/
+endif
 endef
 
 define Package/libupm/install
