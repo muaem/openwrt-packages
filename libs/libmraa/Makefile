@@ -50,13 +50,9 @@ TARGET_CFLAGS+=-I$(STAGING_DIR)/usr/include/node
 define Package/libmraa
   SECTION:=libs
   CATEGORY:=Libraries
-  DEPENDS:=+libstdcpp
+  DEPENDS:=+libstdcpp +librt
 ifeq ($(ENABLE_PYTHON),1)
   DEPENDS:=+python
-endif
-# Workaround for "missing libpthread.so"
-ifneq ($(ENABLE_PYTHON),1)
-	DEPENDS:=+librt
 endif
   TITLE:=Intel IoT lowlevel IO library
 endef
